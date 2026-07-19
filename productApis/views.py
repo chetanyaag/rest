@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
+from productApis.add_product import create_product_object
 from rest_framework.decorators import api_view
 from rest_framework.response import Response 
 from .models import *
@@ -12,12 +13,7 @@ from .searializers import *
 import subprocess
 import pymongo
 import requests
-from paapi5_python_sdk.api.default_api import DefaultApi
-from paapi5_python_sdk.models.condition import Condition
-from paapi5_python_sdk.models.get_items_request import GetItemsRequest
-from paapi5_python_sdk.models.get_items_resource import GetItemsResource
-from paapi5_python_sdk.models.partner_type import PartnerType
-from paapi5_python_sdk.rest import ApiException
+
 from datetime import datetime as dt
 from rest_framework.views import APIView
 import json
@@ -30,9 +26,6 @@ col = db['product']
 token_collection = db['token']
 
 
-
-#############################################
-#### Functions
 
 
 def create_and_get_token(field, value):
@@ -106,8 +99,6 @@ def extract_the_asin(link):
 
 
 
-
-
 # Create your views here.
 
 @api_view(['GET'])
@@ -147,57 +138,11 @@ def addAProduct(request):
 
         # asin = 
     asin = extract_the_asin(asin)
-    item_ids = [asin]
 
-    # check whether asin is a link 
-        # if link than extract the asin
-            # if asin is not found return 403
-    
-# personal data do not share with any one
-    access_key = ""
-    secret_key = ""
-    partner_tag = "bestdeal0013-21"
-    host = "webservices.amazon.in"
-    region = "eu-west-1"
-    default_api = DefaultApi(
-        access_key=access_key, secret_key=secret_key, host=host, region=region
-    )
-#################################################
-    get_items_resource = [
-    GetItemsResource.IMAGES_PRIMARY_LARGE,
-    GetItemsResource.ITEMINFO_CONTENTINFO,
-    GetItemsResource.ITEMINFO_CLASSIFICATIONS,
-    GetItemsResource.ITEMINFO_FEATURES,
-    GetItemsResource.ITEMINFO_MANUFACTUREINFO,
-    GetItemsResource.ITEMINFO_PRODUCTINFO,
-    GetItemsResource.ITEMINFO_TECHNICALINFO,
-    GetItemsResource.ITEMINFO_TITLE,
-    GetItemsResource.OFFERS_LISTINGS_ISBUYBOXWINNER,
-    GetItemsResource.OFFERS_LISTINGS_MERCHANTINFO,
-    GetItemsResource.OFFERS_LISTINGS_PRICE,
-    GetItemsResource.OFFERS_SUMMARIES_LOWESTPRICE,
-    ]
 
     try:
-        get_items_request = GetItemsRequest(
-            partner_tag=partner_tag,
-            partner_type=PartnerType.ASSOCIATES,
-            marketplace="www.amazon.in",
-            condition=Condition.NEW,
-            item_ids=item_ids,
-            resources=get_items_resource,
-        )
-    except ValueError as exception:
-        print("Error in forming GetItemsRequest: ", exception)
-        return Response({"message":exception})   
-c
-    try:
-        response = default_api.get_items(get_items_request)
 
-        return Response({"message":404})
-#   product
-    try:
-        item = response.items_result.items[0]
+        item = create_product_object(asin)
 
         product_title = item.item_info.title.display_value
 
@@ -308,7 +253,6 @@ c
         col.insert_one(product)
 
     return Response({"message":200, "asin":asin})    
-
 
 
 
