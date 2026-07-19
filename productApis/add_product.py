@@ -53,8 +53,7 @@ def get_items(asin: str):
         credential_secret=credential_secret,
         version=version,
     )
-    print(f"Fetching item details for ASIN: {asin} from Creators API...")
-    print(f"calling {credential_id} and {credential_secret} and {version}")
+
 
     api = DefaultApi(api_client)
 
