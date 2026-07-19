@@ -69,14 +69,14 @@ def get_items(asin: str):
             get_items_request_content=get_items_request,
         )
 
-        print("API called successfully.")
-        print(
-            "Complete Response:\n",
-            json.dumps(
-                response.to_dict() if hasattr(response, "to_dict") else str(response),
-                indent=2,
-            ),
-        )
+        # print("API called successfully.")
+        # print(
+        #     "Complete Response:\n",
+        #     json.dumps(
+        #         response.to_dict() if hasattr(response, "to_dict") else str(response),
+        #         indent=2,
+        #     ),
+        # )
         return response.items_result.items[0]
     except ApiException as exception:
         print("Error calling Creators API!")
@@ -85,5 +85,5 @@ def get_items(asin: str):
         print("Unexpected error:", exception)
 
 
-if __name__ == "__main__":
-    get_items("B0DLFMFBJW")
+# if __name__ == "__main__":
+#     get_items("B0DLFMFBJW")
