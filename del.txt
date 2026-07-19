@@ -1,0 +1,171 @@
+{'errors': None,
+ 'items_result': {'items': [{'asin': 'B08FJDLPTG',
+                             'browse_node_info': None,
+                             'customer_reviews': None,
+                             'detail_page_url': 'https://www.amazon.in/dp/B08FJDLPTG?tag=bestdeal0013-21&linkCode=ogi&th=1&psc=1',
+                             'images': {'primary': {'large': None,
+                                                    'medium': {'height': 160,
+                                                               'url': 'https://m.media-amazon.com/images/I/41Mk+EjWPeL._SL160_.jpg',
+                                                               'width': 152},
+                                                    'small': None},
+                                        'variants': None},
+                             'item_info': {'by_line_info': None,
+                                           'classifications': {'binding': {'display_value': 'Grocery',
+                                                                           'label': 'Binding',
+                                                                           'locale': 'en_IN'},
+                                                               'product_group': {'display_value': 'Grocery',
+                                                                                 'label': 'ProductGroup',
+                                                                                 'locale': 'en_IN'}},
+                                           'content_info': None,
+                                           'content_rating': None,
+                                           'external_ids': None,
+                                           'features': {'display_values': ['Palfrey '
+                                                                           'Wheat '
+                                                                           'Nuts '
+                                                                           'is '
+                                                                           'perfect '
+                                                                           'healthy, '
+                                                                           'tasty '
+                                                                           'and '
+                                                                           'nutritious '
+                                                                           'namkeen.',
+                                                                           'Healthy '
+                                                                           'and '
+                                                                           'Crunchy '
+                                                                           'Wheat '
+                                                                           'Nuts '
+                                                                           'Punjabi '
+                                                                           'Tadka '
+                                                                           '- '
+                                                                           'rich '
+                                                                           'in '
+                                                                           'Proteins, '
+                                                                           'Calcium, '
+                                                                           'Vitamins, '
+                                                                           'Essential '
+                                                                           'Amino '
+                                                                           'Acids, '
+                                                                           'Fibers '
+                                                                           'and '
+                                                                           'many '
+                                                                           'more '
+                                                                           'nutrients.',
+                                                                           'High '
+                                                                           'on '
+                                                                           'nutrients, '
+                                                                           'they '
+                                                                           'make '
+                                                                           'excellent '
+                                                                           'snack '
+                                                                           'at '
+                                                                           'any '
+                                                                           'time.',
+                                                                           'No '
+                                                                           'added '
+                                                                           'Preservative.',
+                                                                           'Palfrey '
+                                                                           'Wheat '
+                                                                           'Nut '
+                                                                           'Punjabi '
+                                                                           'Tadka '
+                                                                           'can '
+                                                                           'be '
+                                                                           'taken '
+                                                                           'at '
+                                                                           'any '
+                                                                           'time '
+                                                                           'as '
+                                                                           'a '
+                                                                           'healthy '
+                                                                           'snacks.'],
+                                                        'label': 'Features',
+                                                        'locale': 'en_IN'},
+                                           'manufacture_info': None,
+                                           'product_info': {'color': None,
+                                                            'is_adult_product': None,
+                                                            'item_dimensions': {'height': {'display_value': 4.724409444,
+                                                                                           'label': 'Height',
+                                                                                           'locale': 'en_IN',
+                                                                                           'unit': 'Inches'},
+                                                                                'length': {'display_value': 5.118110231,
+                                                                                           'label': 'Length',
+                                                                                           'locale': 'en_IN',
+                                                                                           'unit': 'Inches'},
+                                                                                'weight': {'display_value': 0.440924524,
+                                                                                           'label': 'Weight',
+                                                                                           'locale': 'en_IN',
+                                                                                           'unit': 'Pounds'},
+                                                                                'width': {'display_value': 3.93700787,
+                                                                                          'label': 'Width',
+                                                                                          'locale': 'en_IN',
+                                                                                          'unit': 'Inches'}},
+                                                            'release_date': None,
+                                                            'size': {'display_value': '200 '
+                                                                                      'g '
+                                                                                      '(Pack '
+                                                                                      'of '
+                                                                                      '1)',
+                                                                     'label': 'Size',
+                                                                     'locale': 'en_IN'},
+                                                            'unit_count': None},
+                                           'technical_info': None,
+                                           'title': {'display_value': 'Palfrey '
+                                                                      'Wheat '
+                                                                      'Nuts '
+                                                                      'Healthy '
+                                                                      'Supersnacks '
+                                                                      '(Punjabi '
+                                                                      'Tadka) '
+                                                                      '- 200g',
+                                                     'label': 'Title',
+                                                     'locale': 'en_IN'},
+                                           'trade_in_info': None},
+                             'offers': {'listings': [{'availability': None,
+                                                      'condition': None,
+                                                      'delivery_info': None,
+                                                      'id': 'XOIP%2FMpWwdeTPAbTja5Da1TFCP6tKxg8C6RpB1kNQyxG0HjTqoS08qFJ5y8VaH49DHC%2FCg88cooH%2BH4CZ2TTXgfAz28rZ%2F%2F4FPgkrmP142MIhaZjmEPfSlQmMQFHWHSFvoJXrDnR6Wcp5Kviku6rdWC8fignPt7t',
+                                                      'is_buy_box_winner': True,
+                                                      'loyalty_points': None,
+                                                      'merchant_info': {'default_shipping_country': 'IN',
+                                                                        'feedback_count': 31,
+                                                                        'feedback_rating': 4.64,
+                                                                        'id': 'A31JJWAFDRHNWQ',
+                                                                        'name': 'Jeni '
+                                                                                'Enterprise'},
+                                                      'price': {'amount': 249.0,
+                                                                'currency': 'INR',
+                                                                'display_amount': '₹249.00 '
+                                                                                  '(₹249.00 '
+                                                                                  '/ '
+                                                                                  'count)',
+                                                                'price_per_unit': 249.0,
+                                                                'savings': {'amount': 51.0,
+                                                                            'currency': 'INR',
+                                                                            'display_amount': '₹51.00 '
+                                                                                              '(17%)',
+                                                                            'percentage': 17,
+                                                                            'price_per_unit': 51.0}},
+                                                      'program_eligibility': None,
+                                                      'promotions': None,
+                                                      'saving_basis': None,
+                                                      'violates_map': False}],
+                                        'summaries': [{'condition': {'condition_note': None,
+                                                                     'display_value': None,
+                                                                     'label': None,
+                                                                     'locale': None,
+                                                                     'sub_condition': None,
+                                                                     'value': 'New'},
+                                                       'highest_price': None,
+                                                       'lowest_price': {'amount': 249.0,
+                                                                        'currency': 'INR',
+                                                                        'display_amount': '₹249.00 '
+                                                                                          '(₹249.00 '
+                                                                                          '/ '
+                                                                                          'count)',
+                                                                        'price_per_unit': 249.0,
+                                                                        'savings': None},
+                                                       'offer_count': None}]},
+                             'parent_asin': None,
+                             'rental_offers': None,
+                             'score': None,
+                             'variation_attributes': None}]}}
