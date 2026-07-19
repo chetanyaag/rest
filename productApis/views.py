@@ -127,22 +127,27 @@ def getProductData(request):
 @api_view(['POST'])
 def addAProduct(request):
 
-    asin = request.data['asin']
+    asin = request.data.get('asin', '')
+    if not asin:
+        return Response({"message": "asin is required"}, status=400)
+
     try:
         if '.' in asin:
-            res = requests.get(asin)
+            res = requests.get(asin, timeout=10)
+            res.raise_for_status()
             asin = res.url
 
-    except:
+    except Exception:
         print("thinking the process")
 
-        # asin = 
     asin = extract_the_asin(asin)
-
+    if not asin:
+        return Response({"message": 404}, status=404)
 
     try:
-
         item = create_product_object(asin)
+        if item is None:
+            return Response({"message": 404}, status=404)
 
         product_title = item.item_info.title.display_value
 
@@ -152,7 +157,7 @@ def addAProduct(request):
 
     except Exception as e:
         print(e)
-        return Response({"message":404})    
+        return Response({"message": 404}, status=404)
 
     try:
         product_binding = item.item_info.classifications.binding.display_value
@@ -252,7 +257,7 @@ def addAProduct(request):
         product["product_id"] = asin
         col.insert_one(product)
 
-    return Response({"message":200, "asin":asin})    
+    return Response({"message":200, "asin":asin})
 
 
 

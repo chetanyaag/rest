@@ -53,9 +53,10 @@ def get_items(asin: str):
         credential_secret=credential_secret,
         version=version,
     )
+    print(f"Fetching item details for ASIN: {asin} from Creators API...")
+    print(f"calling {credential_id} and {credential_secret} and {version}")
 
     api = DefaultApi(api_client)
-
 
     get_items_request = GetItemsRequestContent(
         partner_tag=partner_tag,
@@ -69,20 +70,20 @@ def get_items(asin: str):
             get_items_request_content=get_items_request,
         )
 
-        # print("API called successfully.")
-        # print(
-        #     "Complete Response:\n",
-        #     json.dumps(
-        #         response.to_dict() if hasattr(response, "to_dict") else str(response),
-        #         indent=2,
-        #     ),
-        # )
-        return response.items_result.items[0]
+        items_result = getattr(response, "items_result", None)
+        items = getattr(items_result, "items", None) or []
+        if not items:
+            print(f"No items found for ASIN: {asin}")
+            return None
+
+        return items[0]
     except ApiException as exception:
         print("Error calling Creators API!")
         print(exception)
+        return None
     except Exception as exception:
         print("Unexpected error:", exception)
+        return None
 
 
 # if __name__ == "__main__":
