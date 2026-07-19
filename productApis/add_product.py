@@ -1,75 +1,89 @@
-from creators_api.api.default_api import DefaultApi
-from creators_api.models.search_items_request import SearchItemsRequest
+import json
+import os
+import sys
+from pathlib import Path
 
-credential_id = ""
-credential_secret = ""
-version = "3.2"  # Assigned when you create credentials
-partner_tag = "bestdeal0013-21"
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "creatorsapi-python-sdk"))
 
-
-def add_a_product():
-
-
-
+from creatorsapi_python_sdk.api.default_api import DefaultApi
+from creatorsapi_python_sdk.api_client import ApiClient
+from creatorsapi_python_sdk.exceptions import ApiException
+from creatorsapi_python_sdk.models.get_items_request_content import GetItemsRequestContent
 
 
+def load_env_value(key: str, default: str = "") -> str:
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if env_path.exists():
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            if line.startswith(f"{key}="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return os.getenv(key, default)
 
-    api_instance = DefaultApi(
-        credential_id=credential_id,
-        credential_secret=credential_secret,
-        version=version,
-        marketplace="www.amazon.in"
-    )
+
+credential_id = load_env_value("CREDS_ID", "")
+credential_secret = load_env_value("CREDS_SECRET", "")
+version = "3.2"
+partner_tag = load_env_value("PARTNER_TAG", "bestdeal0013-21")
+resources = [
+    "images.primary.large",
+    "itemInfo.title",
+    "itemInfo.contentInfo",
+    "itemInfo.classifications",
+    "itemInfo.features",
+    "itemInfo.manufactureInfo",
+    "itemInfo.productInfo",
+    "itemInfo.technicalInfo",
+    "offersV2.listings.isBuyBoxWinner",
+    "offersV2.listings.merchantInfo",
+    "offersV2.listings.price",
+    "offersV2.listings.type",
+    "offersV2.listings.availability",
+    "offersV2.listings.condition",
+    ]
+marketplace = load_env_value("MARKETPLACE", "www.amazon.in")
 
 
+def create_product_object(asin: str):
+    return get_items(asin)
 
-def get_items(asin:):
-    # Initialize API client with credential details
+
+def get_items(asin: str):
     api_client = ApiClient(
         credential_id=credential_id,
         credential_secret=credential_secret,
-        version="3.2",
-        # marketplace="www.amazon.in"
+        version=version,
     )
-    
-    # Initialize API
+
     api = DefaultApi(api_client)
 
-    """
-    Add marketplace. For more details, refer: https://affiliate-program.amazon.com/creatorsapi/docs/en-us/api-reference/common-request-headers-and-parameters#marketplace-locale-reference
-    """
-    marketplace = "www.amazon.in"
-    
-    """
-    Choose resources you want from GetItemsResource enum
-    For more details, refer: https://affiliate-program.amazon.com/creatorsapi/docs/en-us/api-reference/operations/get-items#resources-parameter
-    """
-    resources = [
-        'images.primary.medium',
-        'itemInfo.title',
-        'itemInfo.features',
-        'offersV2.listings.price',
-        'offersV2.listings.availability',
-        'offersV2.listings.condition',
-        'offersV2.listings.merchantInfo'
-    ]
-    
-    # Create GetItems request
+
     get_items_request = GetItemsRequestContent(
         partner_tag=partner_tag,
-        item_ids=['B0DLFMFBJW', 'B0BFC7WQ6R', 'B00ZV9RDKK'],
-        resources=resources
+        item_ids=[asin],
+        resources=resources,
     )
-    
+
     try:
-        # Call the GetItems API
-        response = api.get_items(x_marketplace=marketplace, get_items_request_content=get_items_request)
-        
-        print('API called successfully.')
-        print('Complete Response:\n', json.dumps(response.to_dict() if hasattr(response, 'to_dict') else str(response), indent=2))
-        
+        response = api.get_items(
+            x_marketplace=marketplace,
+            get_items_request_content=get_items_request,
+        )
+
+        # print("API called successfully.")
+        # print(
+        #     "Complete Response:\n",
+        #     json.dumps(
+        #         response.to_dict() if hasattr(response, "to_dict") else str(response),
+        #         indent=2,
+        #     ),
+        # )
+        return response.items_result.items[0]
     except ApiException as exception:
-        print('Error calling Creators API!')
+        print("Error calling Creators API!")
         print(exception)
     except Exception as exception:
-        print('Unexpected error:', exception)
+        print("Unexpected error:", exception)
+
+
+# if __name__ == "__main__":
+#     get_items("B0DLFMFBJW")
