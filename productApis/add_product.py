@@ -1,9 +1,18 @@
-import json
+import logging
 import os
 import sys
 from pathlib import Path
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "creatorsapi-python-sdk"))
+
+LOG_DIR = Path(__file__).resolve().parent / 'logs'
+LOG_DIR.mkdir(exist_ok=True)
+LOGGER = logging.getLogger('product_api_helper')
+LOGGER.setLevel(logging.ERROR)
+if not LOGGER.handlers:
+    file_handler = logging.FileHandler(LOG_DIR / 'product_api.log')
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+    LOGGER.addHandler(file_handler)
 
 from creatorsapi_python_sdk.api.default_api import DefaultApi
 from creatorsapi_python_sdk.api_client import ApiClient
@@ -72,16 +81,15 @@ def get_items(asin: str):
         items_result = getattr(response, "items_result", None)
         items = getattr(items_result, "items", None) or []
         if not items:
-            print(f"No items found for ASIN: {asin}")
+            LOGGER.warning("No items found for ASIN: %s", asin)
             return None
 
         return items[0]
     except ApiException as exception:
-        print("Error calling Creators API!")
-        print(exception)
+        LOGGER.exception("Error calling Creators API for ASIN: %s", asin)
         return None
     except Exception as exception:
-        print("Unexpected error:", exception)
+        LOGGER.exception("Unexpected error while fetching item for ASIN: %s", asin)
         return None
 
 

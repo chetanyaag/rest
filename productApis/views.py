@@ -1,3 +1,5 @@
+import logging
+from pathlib import Path
 from email import message
 import django
 import requests
@@ -19,6 +21,15 @@ from rest_framework.views import APIView
 import json
 
 from .messageMethod import *
+
+LOG_DIR = Path(__file__).resolve().parent / 'logs'
+LOG_DIR.mkdir(exist_ok=True)
+LOGGER = logging.getLogger('product_api')
+LOGGER.setLevel(logging.ERROR)
+if not LOGGER.handlers:
+    file_handler = logging.FileHandler(LOG_DIR / 'product_api.log')
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+    LOGGER.addHandler(file_handler)
 
 con = pymongo.MongoClient("localhost", 27017)
 db = con['NazAf']
@@ -64,6 +75,7 @@ def create_and_get_token(field, value):
 
 def extract_the_asin(link):
     if "dp/" in link:
+        LOGGER.info("Extracting ASIN from link: %s", link)
         array = link.split("dp/")
         asin = ""
         for a in array[1]:
@@ -74,6 +86,7 @@ def extract_the_asin(link):
         return asin  
 
     elif "/gp/product/" in link:
+        LOGGER.info("Extracting ASIN from link: %s", link)
         array = link.split("/gp/product/")  
         asin = ""
         for a in array[1]:
@@ -83,6 +96,7 @@ def extract_the_asin(link):
                 break
         return asin 
     elif "field-asin=" in link:
+        LOGGER.info("Extracting ASIN from link: %s", link)
 
         array = link.split("field-asin=")
         asin =""
@@ -133,20 +147,23 @@ def addAProduct(request):
 
     try:
         if '.' in asin:
+            LOGGER.info("Resolving product URL from input: %s", asin)
             res = requests.get(asin, timeout=10)
             res.raise_for_status()
             asin = res.url
 
-    except Exception:
-        print("thinking the process")
+    except Exception as exc:
+        LOGGER.exception("Failed to resolve product URL from input: %s", asin, exc_info=exc)
 
     asin = extract_the_asin(asin)
     if not asin:
+        LOGGER.warning("Invalid ASIN provided: %s", asin)
         return Response({"message": 404}, status=404)
 
     try:
         item = create_product_object(asin)
         if item is None:
+            LOGGER.warning("Product not found for ASIN: %s", asin)
             return Response({"message": 404}, status=404)
 
         product_title = item.item_info.title.display_value
@@ -156,7 +173,7 @@ def addAProduct(request):
         product_url = item.detail_page_url
 
     except Exception as e:
-        print(e)
+        LOGGER.exception("Failed to fetch product details for ASIN: %s", asin)
         return Response({"message": 404}, status=404)
 
     try:
@@ -252,11 +269,13 @@ def addAProduct(request):
     update_check = col.find_one({'product_id':asin})
 
     if update_check:
+        LOGGER.info("Updating existing product in database for ASIN: %s", asin)
         col.update_one({'product_id':asin},{"$set":product})
     else:    
+        LOGGER.info("Inserting new product into database for ASIN: %s", asin)
         product["product_id"] = asin
         col.insert_one(product)
-
+    LOGGER.info("Product data processed successfully for ASIN: %s", asin)
     return Response({"message":200, "asin":asin})
 
 
@@ -324,14 +343,14 @@ def create_user(request):
         # check already exits
         user_avial_status = User.objects.filter(username = username).exists()
         if user_avial_status:
-            print("user already exits create another or update")
+            LOGGER.warning("User already exists: %s", username)
             return Response({'status':503, 'message':'user already exits'})
 
         else:
             # lets create new user
             user = User.objects.create_user(username = username, password= str(password))
             # create the token for the new user
-            print(create_and_get_token("user_name", username))
+            LOGGER.info("Created user: %s", username)
             return Response({'status':200, 'message':'new user is created'})
     else:
         return Response({'status':404, 'message':'One of the field is misssing or empty'})
